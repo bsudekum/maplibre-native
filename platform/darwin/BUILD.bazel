@@ -1,21 +1,22 @@
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
+load(
+    "@build_bazel_rules_swift//swift:swift.bzl",
+    "swift_library",
+)
 load("//bazel:flags.bzl", "CPP_FLAGS", "MAPLIBRE_FLAGS", "WARNING_FLAGS")
 load(
     "bazel/files.bzl",
     "MLN_DARWIN_OBJCPP_HEADERS",
     "MLN_DARWIN_OBJC_HEADERS",
     "MLN_DARWIN_PRIVATE_HEADERS",
-    "MLN_DARWIN_PUBLIC_OBJCPP_SOURCE",
-    "MLN_DARWIN_PUBLIC_OBJCPP_OPENGL_SOURCE",
     "MLN_DARWIN_PUBLIC_OBJCPP_CUSTOM_DRAWABLE_SOURCE",
+    "MLN_DARWIN_PUBLIC_OBJCPP_OPENGL_SOURCE",
+    "MLN_DARWIN_PUBLIC_OBJCPP_SOURCE",
     "MLN_DARWIN_PUBLIC_OBJC_SOURCE",
     "MLN_GENERATED_DARWIN_STYLE_HEADERS",
     "MLN_GENERATED_DARWIN_STYLE_PUBLIC_HEADERS",
     "MLN_GENERATED_DARWIN_STYLE_SOURCE",
     "MLN_GENERATED_DARWIN_TEST_CODE",
-)
-load(
-    "@build_bazel_rules_swift//swift:swift.bzl",
-    "swift_library",
 )
 
 filegroup(
@@ -124,8 +125,8 @@ genrule(
     ],
     outs = MLN_GENERATED_DARWIN_STYLE_SOURCE +
            MLN_GENERATED_DARWIN_STYLE_HEADERS + MLN_GENERATED_DARWIN_TEST_CODE,
-    cmd = "node $(execpath scripts/generate-style-code.js) --root $(RULEDIR)/../../",
-    tools = ["scripts/generate-style-code.js"],
+    cmd = "BAZEL_BINDIR=. $(execpath :generate-style-code-script) --root $(RULEDIR)/../../",
+    tools = [":generate-style-code-script"],
     visibility = ["//visibility:public"],
 )
 
@@ -343,4 +344,19 @@ exports_files(
     MLN_DARWIN_PRIVATE_HEADERS +
     MLN_DARWIN_OBJC_HEADERS +
     MLN_DARWIN_OBJCPP_HEADERS,
+)
+
+js_binary(
+    name = "generate-style-code-script",
+    data = [
+        "scripts/style-spec-cocoa-conventions-v8.json",
+        "scripts/style-spec-overrides-v8.json",
+        "//:node_modules/argparse",
+        "//:node_modules/csscolorparser",
+        "//:node_modules/ejs",
+        "//:node_modules/lodash",
+        "//:style-code",
+        "//:style-spec",
+    ],
+    entry_point = "scripts/generate-style-code.js",
 )
