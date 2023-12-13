@@ -22,34 +22,25 @@ load(
 load("//bazel:flags.bzl", "CPP_FLAGS", "MAPLIBRE_FLAGS")
 
 # Generate code required by the core
-filegroup(
-    name = "style_data",
+
+js_run_binary(
+    name = "generated_style_code",
     srcs = glob(
         ["**/*.ejs"],
         allow_empty = False,
     ),
-)
-
-js_run_binary(
-    name = "generated_style_code",
-    srcs = ["style_data"],
     outs = MLN_PUBLIC_GENERATED_STYLE_HEADERS +
            MLN_PRIVATE_GENERATED_STYLE_HEADERS +
            MLN_GENERATED_STYLE_SOURCE,
     tool = ":generate-style-code-script",
 )
 
-filegroup(
-    name = "shader_data",
+js_run_binary(
+    name = "generated_shaders",
     srcs = ["shaders/manifest.json"] + glob(
         ["shaders/*.glsl"],
         allow_empty = False,
     ),
-)
-
-js_run_binary(
-    name = "generated_shaders",
-    srcs = ["shader_data"],
     outs = MLN_GENERATED_SHADER_HEADERS +
            MLN_GENERATED_OPENGL_SHADER_HEADERS,
     tool = ":generate-shader-code-script",
@@ -251,7 +242,6 @@ js_binary(
         ":node_modules/csscolorparser",
         ":style-code",
         ":style-spec",
-        ":style_data",
     ],
     entry_point = "scripts/generate-style-code.js",
 )
