@@ -64,18 +64,6 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
-      - name: Cache node modules
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: /user/local/lib/node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
       - name: Cache Bazel
         uses: actions/cache@v3
         with:
@@ -84,13 +72,6 @@ jobs:
             ${{ runner.os }}-bazel-
           path: ~/.cache/bazel
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-
-      - name: npm install
-        run: npm ci --ignore-scripts
-      
       - run: cp bazel/example_config.bzl bazel/config.bzl
 
       - name: Check debug symbols
