@@ -1,4 +1,4 @@
-load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_run_binary")
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library", "js_run_binary")
 load(
     "@build_bazel_rules_swift//swift:swift.bzl",
     "swift_library",
@@ -331,8 +331,6 @@ exports_files(
         "app/ExampleCustomDrawableStyleLayer.h",
         "app/ExampleCustomDrawableStyleLayer.mm",
         "include/mbgl/util/image+MLNAdditions.hpp",
-        "scripts/check-public-symbols.js",
-        "scripts/check-public-symbols.sh",
     ] + MLN_DARWIN_PUBLIC_OBJC_SOURCE +
     MLN_DARWIN_PUBLIC_OBJCPP_SOURCE +
     MLN_DARWIN_PUBLIC_OBJCPP_OPENGL_SOURCE +
@@ -354,4 +352,29 @@ js_binary(
         "//:style-spec",
     ],
     entry_point = "scripts/generate-style-code.js",
+)
+
+js_library(
+    name = "symbols-to-check",
+    srcs = [
+        ":darwin_objc_hdrs",
+        ":darwin_objc_srcs",
+        ":darwin_objcpp_hdrs",
+        ":darwin_objcpp_srcs",
+        ":darwin_private_hdrs",
+        ":generated_code",
+        ":generated_style_hdrs",
+        ":generated_style_srcs",
+    ] + select({
+        "//:metal_renderer": [],
+        "//conditions:default": [
+            ":darwin_objcpp_opengl_srcs",
+        ],
+    }) + select({
+        "//:legacy_renderer": [],
+        "//conditions:default": [
+            ":darwin_objcpp_custom_drawable_srcs",
+        ],
+    }),
+    visibility = ["//platform:__pkg__"],
 )
