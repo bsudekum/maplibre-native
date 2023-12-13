@@ -36,7 +36,7 @@ genrule(
     outs = MLN_PUBLIC_GENERATED_STYLE_HEADERS +
            MLN_PRIVATE_GENERATED_STYLE_HEADERS +
            MLN_GENERATED_STYLE_SOURCE,
-    cmd = "BAZEL_BINDIR=. $(execpath :generate-style-code-script) --root $(RULEDIR)",
+    cmd = "BAZEL_BINDIR=. $(execpath :generate-style-code-script) --root $(GENDIR)",
     tools = [":generate-style-code-script"],
 )
 
@@ -53,7 +53,7 @@ genrule(
     srcs = ["shader_data"],
     outs = MLN_GENERATED_SHADER_HEADERS +
            MLN_GENERATED_OPENGL_SHADER_HEADERS,
-    cmd = "BAZEL_BINDIR=. $(execpath :generate-shader-code-script) --root $(RULEDIR)",
+    cmd = "BAZEL_BINDIR=. $(execpath :generate-shader-code-script) --root $(GENDIR)",
     tools = [":generate-shader-code-script"],
 )
 

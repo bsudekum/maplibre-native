@@ -125,7 +125,7 @@ genrule(
     ],
     outs = MLN_GENERATED_DARWIN_STYLE_SOURCE +
            MLN_GENERATED_DARWIN_STYLE_HEADERS + MLN_GENERATED_DARWIN_TEST_CODE,
-    cmd = "BAZEL_BINDIR=. $(execpath :generate-style-code-script) --root $(RULEDIR)/../../",
+    cmd = "BAZEL_BINDIR=. $(execpath :generate-style-code-script) --root $(GENDIR)",
     tools = [":generate-style-code-script"],
     visibility = ["//visibility:public"],
 )
