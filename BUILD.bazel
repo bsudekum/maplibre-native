@@ -1,4 +1,4 @@
-load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library")
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library", "js_run_binary")
 load("@bazel_skylib//rules:common_settings.bzl", "string_flag")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load(
@@ -30,14 +30,13 @@ filegroup(
     ),
 )
 
-genrule(
+js_run_binary(
     name = "generated_style_code",
     srcs = ["style_data"],
     outs = MLN_PUBLIC_GENERATED_STYLE_HEADERS +
            MLN_PRIVATE_GENERATED_STYLE_HEADERS +
            MLN_GENERATED_STYLE_SOURCE,
-    cmd = "BAZEL_BINDIR=. $(execpath :generate-style-code-script) --root $(GENDIR)",
-    tools = [":generate-style-code-script"],
+    tool = ":generate-style-code-script",
 )
 
 filegroup(
@@ -48,42 +47,35 @@ filegroup(
     ),
 )
 
-genrule(
+js_run_binary(
     name = "generated_shaders",
     srcs = ["shader_data"],
     outs = MLN_GENERATED_SHADER_HEADERS +
            MLN_GENERATED_OPENGL_SHADER_HEADERS,
-    cmd = "BAZEL_BINDIR=. $(execpath :generate-shader-code-script) --root $(GENDIR)",
-    tools = [":generate-shader-code-script"],
+    tool = ":generate-shader-code-script",
 )
 
 # This header only target strips the __generated__ prefix for the compiler
 # search paths, making the location of generated code transparent to the build
 cc_library(
     name = "mbgl-core-generated-public-artifacts",
-    srcs = [],
-    hdrs = MLN_PUBLIC_GENERATED_STYLE_HEADERS +
+    hdrs = [
+               ":generated_shaders",
+               ":generated_style_code",
+           ] + MLN_PUBLIC_GENERATED_STYLE_HEADERS +
            MLN_GENERATED_SHADER_HEADERS +
            select({
                "//:metal_renderer": [],
                "//conditions:default": MLN_GENERATED_OPENGL_SHADER_HEADERS,
            }),
     visibility = ["//visibility:public"],
-    deps = [
-        ":generated_shaders",
-        ":generated_style_code",
-    ],
 )
 
 # ditto, but for private headers (under the src/ path)
 cc_library(
     name = "mbgl-core-generated-private-artifacts",
-    srcs = [],
-    hdrs = MLN_PRIVATE_GENERATED_STYLE_HEADERS,
+    hdrs = [":generated_style_code"] + MLN_PRIVATE_GENERATED_STYLE_HEADERS,
     visibility = ["//visibility:private"],
-    deps = [
-        ":generated_style_code",
-    ],
 )
 
 # Generated source is inserted directly into the core target, no need to remove
@@ -257,7 +249,6 @@ js_binary(
     data = [
         ":node_modules/argparse",
         ":node_modules/csscolorparser",
-        ":node_modules/ejs",
         ":style-code",
         ":style-spec",
         ":style_data",
@@ -287,4 +278,7 @@ js_library(
     name = "style-code",
     srcs = ["scripts/style-code.js"],
     visibility = ["//visibility:public"],
+    deps = [
+        ":node_modules/ejs",
+    ],
 )

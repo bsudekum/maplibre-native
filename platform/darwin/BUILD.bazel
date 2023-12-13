@@ -1,4 +1,4 @@
-load("@aspect_rules_js//js:defs.bzl", "js_binary")
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_run_binary")
 load(
     "@build_bazel_rules_swift//swift:swift.bzl",
     "swift_library",
@@ -116,17 +116,16 @@ filegroup(
     ],
 )
 
-genrule(
+js_run_binary(
     name = "generated_code",
     srcs = [
+        ":docs_ejs_templates",
         ":generator_data",
         ":test_ejs_templates",
-        ":docs_ejs_templates",
     ],
     outs = MLN_GENERATED_DARWIN_STYLE_SOURCE +
            MLN_GENERATED_DARWIN_STYLE_HEADERS + MLN_GENERATED_DARWIN_TEST_CODE,
-    cmd = "BAZEL_BINDIR=. $(execpath :generate-style-code-script) --root $(GENDIR)",
-    tools = [":generate-style-code-script"],
+    tool = ":generate-style-code-script",
     visibility = ["//visibility:public"],
 )
 
@@ -217,15 +216,12 @@ cc_library(
         ":darwin_objc_hdrs",
         ":darwin_objcpp_hdrs",
         ":darwin_private_hdrs",
-        ":generated_style_hdrs",
+        ":generated_code",
     ],
     hdrs = [
         ":generated_style_hdrs",
     ],
     visibility = ["//visibility:public"],
-    deps = [
-        ":generated_code",
-    ],
 )
 
 # Objc files for the iOS source
@@ -353,7 +349,6 @@ js_binary(
         "scripts/style-spec-overrides-v8.json",
         "//:node_modules/argparse",
         "//:node_modules/csscolorparser",
-        "//:node_modules/ejs",
         "//:node_modules/lodash",
         "//:style-code",
         "//:style-spec",
