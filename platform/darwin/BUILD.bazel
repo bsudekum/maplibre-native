@@ -33,7 +33,10 @@ filegroup(
 
 filegroup(
     name = "darwin_objcpp_hdrs",
-    srcs = MLN_DARWIN_OBJCPP_HEADERS,
+    srcs = MLN_DARWIN_OBJCPP_HEADERS + select({
+        "//:metal_renderer": [],
+        "//conditions:default": ["src/MLNOpenGLStyleLayer.h"],
+    }),
     visibility = ["//visibility:public"],
 )
 
