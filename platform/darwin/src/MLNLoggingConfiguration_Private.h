@@ -17,6 +17,7 @@ NS_INLINE NSString *MLNStringFromNSEdgeInsets(NSEdgeInsets insets) {
 #define MLNLogWarning(...)
 #define MLNLogError(...)
 #define MLNLogFault(...)
+#define MLNLogErrorMessage(...)
 
 #else
 
@@ -32,7 +33,7 @@ NS_INLINE NSString *MLNStringFromNSEdgeInsets(NSEdgeInsets insets) {
 #define MLNLogWarning(message, ...)  MLNLogWithType(MLNLoggingLevelWarning, __PRETTY_FUNCTION__, __LINE__, message, ##__VA_ARGS__)
 #define MLNLogError(message, ...)    MLNLogWithType(MLNLoggingLevelError, __PRETTY_FUNCTION__, __LINE__, message, ##__VA_ARGS__)
 #define MLNLogFault(message, ...)    MLNLogWithType(MLNLoggingLevelFault, __PRETTY_FUNCTION__, __LINE__, message, ##__VA_ARGS__)
-#define MLNLogErrorMessage(message)  MLNLogWithTypeMessage(MLNLoggingLevelError, __PRETTY_FUNCTION__, __LINE__, message)
+#define MLNLogErrorMessage(message)  MLNLogWithType(MLNLoggingLevelError, __PRETTY_FUNCTION__, __LINE__, message)
 
 #endif
 
