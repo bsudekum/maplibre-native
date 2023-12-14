@@ -693,49 +693,10 @@ public:
         NSStringFromClass(self.class));
     });
 
-    // setup logo
-    //
-    UIImage *logo = [UIImage mgl_resourceImageNamed:@"maplibre-logo-stroke-gray"];
-    _logoView = [[UIImageView alloc] initWithImage:logo];
-    _logoView.accessibilityTraits = UIAccessibilityTraitStaticText;
-    _logoView.accessibilityLabel = NSLocalizedStringWithDefaultValue(@"LOGO_A11Y_LABEL", nil, nil, @"Mapbox", @"Accessibility label");
-    _logoView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:_logoView];
-    _logoViewConstraints = [NSMutableArray array];
-    _logoViewPosition = MLNOrnamentPositionBottomLeft;
-    _logoViewMargins = MLNOrnamentDefaultPositionOffset;
-
-    // setup attribution
-    //
-    _attributionButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
-    _attributionButton.accessibilityLabel = NSLocalizedStringWithDefaultValue(@"INFO_A11Y_LABEL", nil, nil, @"About this map", @"Accessibility label");
-    _attributionButton.accessibilityHint = NSLocalizedStringWithDefaultValue(@"INFO_A11Y_HINT", nil, nil, @"Shows credits, a feedback form, and more", @"Accessibility hint");
-    [_attributionButton addTarget:self action:@selector(showAttribution:) forControlEvents:UIControlEventTouchUpInside];
-    _attributionButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:_attributionButton];
-    _attributionButtonConstraints = [NSMutableArray array];
-
-    UILongPressGestureRecognizer *attributionLongPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(showAttribution:)];
-    [_attributionButton addGestureRecognizer:attributionLongPress];
-    _attributionButtonPosition = MLNOrnamentPositionBottomRight;
-    _attributionButtonMargins = MLNOrnamentDefaultPositionOffset;
-
-    // setup compass
-    //
-    _compassView = [MLNCompassButton compassButtonWithMapView:self];
-    [self addSubview:_compassView];
-    _compassViewConstraints = [NSMutableArray array];
-    _compassViewPosition = MLNOrnamentPositionTopRight;
-    _compassViewMargins = MLNOrnamentDefaultPositionOffset;
-    
-    // setup scale control
-    //
-    _scaleBar = [[MLNScaleBar alloc] init];
-    _scaleBar.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:_scaleBar];
-    _scaleBarConstraints = [NSMutableArray array];
-    _scaleBarPosition = MLNOrnamentPositionTopLeft;
-    _scaleBarMargins = MLNOrnamentDefaultPositionOffset;
+    _logoView = nil;
+    _attributionButton = nil;
+    _compassView = nil;
+    _scaleBar = nil;
 
     [self installConstraints];
 
@@ -1086,10 +1047,7 @@ public:
 
 - (void)installConstraints
 {
-    [self installCompassViewConstraints];
-    [self installScaleBarConstraints];
-    [self installLogoViewConstraints];
-    [self installAttributionButtonConstraints];
+    return;
 }
 
 - (void)installCompassViewConstraints {
@@ -5813,9 +5771,6 @@ static void *windowScreenContext = &windowScreenContext;
 - (void)setLocationManager:(nullable id<MLNLocationManager>)locationManager
 {
     MLNLogDebug(@"Setting locationManager: %@", locationManager);
-    if (!locationManager) {
-        locationManager = [[MLNCLLocationManager alloc] init];
-    }
     [_locationManager stopUpdatingLocation];
     [_locationManager stopUpdatingHeading];
     _locationManager.delegate = nil;
