@@ -80,3 +80,8 @@ FOUNDATION_EXPORT MLN_EXPORT const unsigned char MapboxVersionString[];
 #if MLN_DRAWABLE_RENDERER
 #import "MLNCustomDrawableStyleLayer.h"
 #endif
+#import "NSDictionary+MLNAdditions"
+#import "MLNMapAccessibilityElement.h"
+#import "MLNUserLocationHeadingIndicator.h"
+#import "NSException+MLNAdditions.h"
+#import "MLNUserLocationHeadingArrowLayer.h"
