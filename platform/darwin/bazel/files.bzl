@@ -58,6 +58,7 @@ MLN_DARWIN_OBJC_HEADERS = [
     "src/MLNCompassDirectionFormatter.h",
     "src/MLNComputedShapeSource.h",
     "src/MLNCoordinateFormatter.h",
+    "src/MLNCustomDrawableStyleLayer.h",
     "src/MLNDefaultStyle.h",
     "src/MLNDistanceFormatter.h",
     "src/MLNFeature.h",
@@ -74,6 +75,7 @@ MLN_DARWIN_OBJC_HEADERS = [
     "src/MLNOfflinePack.h",
     "src/MLNOfflineRegion.h",
     "src/MLNOfflineStorage.h",
+    "src/MLNOpenGLStyleLayer.h",
     "src/MLNOverlay.h",
     "src/MLNPointAnnotation.h",
     "src/MLNPointCollection.h",
@@ -99,7 +101,6 @@ MLN_DARWIN_OBJC_HEADERS = [
     "src/NSExpression+MLNAdditions.h",
     "src/NSPredicate+MLNAdditions.h",
     "src/NSValue+MLNAdditions.h",
-    "src/MLNCustomDrawableStyleLayer.h",
 ]
 
 MLN_DARWIN_OBJCPP_HEADERS = [
