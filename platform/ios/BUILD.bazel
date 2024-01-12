@@ -145,11 +145,13 @@ apple_xcframework(
 
 ios_framework(
     name = "MapLibre.link",
+    testonly = True,
     bundle_id = "com.maplibre.link",
     families = ["iphone"],
     infoplists = ["info_plist"],
     linkopts = [""],
     minimum_os_version = "12.0",
+    visibility = ["//visibility:public"],
     deps = ["//platform:ios-sdk"],
 )
 
