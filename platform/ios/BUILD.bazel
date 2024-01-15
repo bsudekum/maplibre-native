@@ -96,11 +96,11 @@ info_plist(
 )
 
 public_hdrs = [
-    # ":umbrella_header",
+    ":umbrella_header",
     ":ios_public_hdrs",
     ":ios_sdk_hdrs",
     "//platform/darwin:darwin_objc_hdrs",
-    # "//platform/darwin:darwin_objcpp_hdrs",
+    "//platform/darwin:darwin_objcpp_hdrs",
     "//platform/darwin:generated_style_public_hdrs",
 ]
 
@@ -116,7 +116,7 @@ apple_static_xcframework(
     },
     minimum_os_versions = {"ios": "12.0"},
     public_hdrs = public_hdrs,
-    # umbrella_header = "umbrella_header",
+    umbrella_header = "umbrella_header",
     visibility = ["//visibility:public"],
     deps = ["//platform:ios-sdk"],
 )
@@ -139,18 +139,17 @@ apple_xcframework(
     },
     minimum_os_versions = {"ios": "12.0"},
     public_hdrs = public_hdrs,
-    # umbrella_header = "umbrella_header",
+    umbrella_header = "umbrella_header",
     visibility = ["//visibility:public"],
     deps = ["//platform:ios-sdk-dynamic"],
 )
 
 ios_framework(
     name = "MapLibre.link",
-    testonly = True,
     bundle_id = "com.maplibre.link",
     families = ["iphone"],
     infoplists = ["info_plist"],
-    linkopts = [""],
+    linkopts = ["-all_load"],
     minimum_os_version = "12.0",
     visibility = ["//visibility:public"],
     deps = ["//platform:ios-sdk"],
