@@ -194,7 +194,7 @@ config_setting(
 
 string_flag(
     name = "renderer",
-    build_setting_default = "legacy",
+    build_setting_default = "metal",
     values = [
         "legacy",
         "drawable",
