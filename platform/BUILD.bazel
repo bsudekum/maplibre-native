@@ -32,15 +32,9 @@ objc_library(
         "CoreGraphics",
         "CoreLocation",
         "QuartzCore",
-    ] + select({
-        "//:metal_renderer": [
-            "MetalKit",
-        ],
-        "//conditions:default": [
-            "OpenGLES",
-            "GLKit",
-        ],
-    }),
+        "OpenGLES",
+        "GLKit",
+    ],
     visibility = ["//visibility:public"],
     deps = [
         ":objc-headers",
