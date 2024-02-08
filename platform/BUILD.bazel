@@ -49,6 +49,7 @@ objc_library(
             "GLKit",
         ],
     }),
+    visibility = ["//visibility:public"],
     deps = [
         ":objc-headers",
         "//:mbgl-core",
