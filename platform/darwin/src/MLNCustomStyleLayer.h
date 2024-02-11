@@ -24,9 +24,9 @@ typedef struct MLNStyleLayerDrawingContext {
     CGFloat pitch;
     CGFloat fieldOfView;
     MLNMatrix4 projectionMatrix;
-#if MLN_RENDER_BACKEND_METAL
-    id<MTLRenderCommandEncoder> renderEncoder;
-#endif
+// #if MLN_RENDER_BACKEND_METAL
+//     id<MTLRenderCommandEncoder> renderEncoder;
+// #endif
 } MLNStyleLayerDrawingContext;
 
 MLN_EXPORT
