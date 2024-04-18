@@ -21,9 +21,9 @@ load(
     "MLN_PUBLIC_IOS_APP_SOPURCE",
 )
 load("//platform/ios/bazel:macros.bzl", "info_plist")
-load("//platform/ios/bazel:provisioning.bzl", "configure_device_profiles")
+# load("//platform/ios/bazel:provisioning.bzl", "configure_device_profiles")
 
-configure_device_profiles()
+# configure_device_profiles()
 
 filegroup(
     name = "ios_sdk_hdrs",
