@@ -3,7 +3,7 @@ load("@build_bazel_rules_apple//apple:apple.bzl", "apple_static_xcframework", "a
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_application", "ios_framework")
 load("@build_bazel_rules_apple//apple:resources.bzl", "apple_resource_bundle")
 load("@build_bazel_rules_apple//apple:versioning.bzl", "apple_bundle_version")
-load("@darwin_config//:config.bzl", "BUNDLE_ID_PREFIX")
+# load("@darwin_config//:config.bzl", "BUNDLE_ID_PREFIX")
 load(
     "@rules_xcodeproj//xcodeproj:defs.bzl",
     "top_level_target",
@@ -182,7 +182,7 @@ _IOS_APPLICATION_RESOURCES = [
 
 ios_application(
     name = "App",
-    bundle_id = "{}.maplibre.app".format(BUNDLE_ID_PREFIX),
+    bundle_id = "foo.maplibre.app",
     families = [
         "iphone",
         "ipad",
@@ -219,7 +219,7 @@ ios_application(
 
 ios_application(
     name = "BenchmarkApp",
-    bundle_id = "{}.benchmark.app".format(BUNDLE_ID_PREFIX),
+    bundle_id = "foo.benchmark.app",
     families = [
         "iphone",
         "ipad",
