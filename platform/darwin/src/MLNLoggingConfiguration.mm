@@ -78,6 +78,10 @@ public:
     
 }
 
+- (void)logCallingFunction:(const char *)callingFunction functionLine:(NSUInteger)functionLine messageType:(MLNLoggingLevel)type message:(NSString *)message {
+    _handler(type, @(callingFunction), functionLine, message);
+}
+
 - (MLNLoggingBlockHandler)defaultBlockHandler {
     MLNLoggingBlockHandler maplibreHandler = ^(MLNLoggingLevel level, NSString *fileName, NSUInteger line, NSString *message) {
         
